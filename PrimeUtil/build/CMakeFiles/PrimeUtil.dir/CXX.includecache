@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/primeutil.h
+vector
+-
+algorithm
+-
+
+/home/valerie/Open3d_example/PrimeUtil/src/primeutil.cpp
+iostream
+-
+vector
+-
+numeric
+-
+algorithm
+-
+primeutil.h
+/home/valerie/Open3d_example/PrimeUtil/src/primeutil.h
+

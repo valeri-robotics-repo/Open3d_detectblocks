@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/valerie/Open3d_example/build",
+  "command": "/usr/bin/g++-8  -DFMT_HEADER_ONLY=0 -DFMT_STRING_ALIAS=1 -DFMT_USE_WINDOWS_H=0 -D_GLIBCXX_USE_CXX11_ABI=1 -I/home/valerie/Open3d_example/sharedlib/include -isystem /home/valerie/Open3d/include -isystem /home/valerie/Open3d/include/open3d/3rdparty  -g   -std=gnu++14 -o CMakeFiles/DetectBlocksDemo.dir/usesharedlib/src/demo2.cpp.o -c /home/valerie/Open3d_example/usesharedlib/src/demo2.cpp",
+  "file": "/home/valerie/Open3d_example/usesharedlib/src/demo2.cpp"
+},
+{
+  "directory": "/home/valerie/Open3d_example/build",
+  "command": "/usr/bin/g++-8  -DFMT_HEADER_ONLY=0 -DFMT_STRING_ALIAS=1 -DFMT_USE_WINDOWS_H=0 -D_GLIBCXX_USE_CXX11_ABI=1 -I/home/valerie/Open3d_example/sharedlib/include -isystem /home/valerie/Open3d/include -isystem /home/valerie/Open3d/include/open3d/3rdparty  -g   -std=gnu++14 -o CMakeFiles/DetectBlocksDemo.dir/sharedlib/src/detectblocks.cpp.o -c /home/valerie/Open3d_example/sharedlib/src/detectblocks.cpp",
+  "file": "/home/valerie/Open3d_example/sharedlib/src/detectblocks.cpp"
+},
+{
+  "directory": "/home/valerie/Open3d_example/build",
+  "command": "/usr/bin/g++-8  -DFMT_HEADER_ONLY=0 -DFMT_STRING_ALIAS=1 -DFMT_USE_WINDOWS_H=0 -D_GLIBCXX_USE_CXX11_ABI=1 -I/home/valerie/Open3d_example/sharedlib/include -isystem /home/valerie/Open3d/include -isystem /home/valerie/Open3d/include/open3d/3rdparty  -g   -std=gnu++14 -o CMakeFiles/TestVisualizer.dir/TestVisualizer.cpp.o -c /home/valerie/Open3d_example/TestVisualizer.cpp",
+  "file": "/home/valerie/Open3d_example/TestVisualizer.cpp"
+}
+]

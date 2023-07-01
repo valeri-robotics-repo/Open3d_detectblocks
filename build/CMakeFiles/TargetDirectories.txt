@@ -1,0 +1,4 @@
+/home/valerie/Open3d_example/build/CMakeFiles/rebuild_cache.dir
+/home/valerie/Open3d_example/build/CMakeFiles/edit_cache.dir
+/home/valerie/Open3d_example/build/CMakeFiles/DetectBlocksDemo.dir
+/home/valerie/Open3d_example/build/CMakeFiles/TestVisualizer.dir

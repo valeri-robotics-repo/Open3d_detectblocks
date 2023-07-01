@@ -1,0 +1,1 @@
+/usr/bin/g++-8  -g   CMakeFiles/TestVisualizer.dir/TestVisualizer.cpp.o  -o TestVisualizer  -Wl,-rpath,/home/valerie/Open3d/lib /home/valerie/Open3d/lib/libOpen3D.so 

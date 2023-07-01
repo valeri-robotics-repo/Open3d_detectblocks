@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/DetectBlocksDemo.dir/src/demo2.cpp.o CMakeFiles/DetectBlocksDemo.dir/home/valerie/Open3d_example/sharedlib/src/detectblocks.cpp.o  -o DetectBlocksDemo  -Wl,-rpath,/home/valerie/Open3d/lib /home/valerie/Open3d/lib/libOpen3D.so 

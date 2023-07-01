@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/valerie/Open3d_example/sharedlib/detectblocks.cpp
+detectblocks.h
+/home/valerie/Open3d_example/sharedlib/detectblocks.h
+stdio.h
+-
+
+/home/valerie/Open3d_example/sharedlib/detectblocks.h
+stdio.h
+-
+

@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC   -shared -Wl,-soname,libdetectblocks.so -o libdetectblocks.so CMakeFiles/detectblocks.dir/src/detectblocks.cpp.o  -Wl,-rpath,/home/valerie/Open3d/lib: /home/valerie/Open3d/lib/libOpen3D.so 

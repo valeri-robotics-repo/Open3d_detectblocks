@@ -1,0 +1,2 @@
+/usr/lib/libdetectblocks.so
+/usr/local/lib/libdetectblocks.so

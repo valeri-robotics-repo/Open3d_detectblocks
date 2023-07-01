@@ -1,0 +1,7 @@
+cmake -DCMAKE_PREFIX_PATH="~/Open3d/lib/cmake" ..
+make -j
+
+
+---
+/usr/bin/ld: cannot find -l
+I didn't install the lib, which copies it to that folder...
