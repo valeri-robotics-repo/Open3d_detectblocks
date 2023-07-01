@@ -20,3 +20,12 @@ How to run this project:
     4.  When ready, you will need to run the install to have access to this project from your ROS2 build, assuming you have it in a separate project.
         In the sharedlib folder,  run the following:
 
+            mkdir build
+            cd build
+            cmake ..
+            make
+            sudo make install
+
+            Now this will be accessible to your ROS2 pooject.
+
+            
