@@ -214,8 +214,9 @@ std::vector<size_t> Open3DPointCloud::ExtractLargestPlane(const geometry::PointC
     std::vector<size_t> surface_plane_indexes;
 
     std::tie(plane_equation, surface_plane_indexes) = plane_cloud_ptr.SegmentPlane(0.015, 4, 150);
-    //if (debug_level >= DebugLevel::Verbal) 
-    PrintPlaneEquation(plane_equation);
+    if (debug_level >= DebugLevel::Verbal) {
+      PrintPlaneEquation(plane_equation);
+    }
 
     
     
@@ -246,7 +247,12 @@ Eigen::Vector3d Open3DPointCloud::IsolateLargestVerticalSide(const geometry::Poi
     geometry::PointCloud normals_cloud(verticalfaces_cloud.normals_);
     
     double normdist_eps = 0.05; //this is the normals distance, so this can be bigger...
-    std::vector<int> normals_clusters = normals_cloud.ClusterDBSCAN(normdist_eps, 2, false);
+    std::vector<int> normals_clusters;
+    if (normals_cloud.points_.size() >= 4 ){
+      normals_clusters = normals_cloud.ClusterDBSCAN(normdist_eps, 4, false);
+    }
+    else return Eigen::Vector3d(0.0, 0.0, 0.0);
+
     std::vector<std::vector<size_t>> normals_clusters_indexes =  FilterSegmentIndexes(normals_clusters);
 
 
@@ -348,6 +354,9 @@ std::shared_ptr<geometry::PointCloud> Open3DPointCloud::SegmentHorizontalSurface
             
             //Segment the leftovers
             double leftover_eps = 0.01; 
+            if (leftovers_cloud_ptr->points_.size() < 12){
+              std::cout << "OOH BAD" << std::endl;
+            }
             std::vector<int> leftover_segments =  leftovers_cloud_ptr->ClusterDBSCAN(leftover_eps, 12, false);
             
             //sort each cluster
@@ -432,10 +441,10 @@ void Open3DPointCloud::SegmentBlocks(
               visualization::DrawGeometries({horiz_cloud_ptr}, "Cloud reduced to horizontal normals only..."); 
             }
 
-
             Eigen::Vector4d horiz_plane_equation;
             std::shared_ptr<geometry::PointCloud> leftovers_cloud_ptr;
             auto surface_plane_indexes = ExtractLargestPlane(*horiz_cloud_ptr, horiz_plane_equation, leftovers_cloud_ptr);
+            
 
             //Remap the selected indexes back to the original point cloud:
             std::vector<size_t> selected_horiz_indexes = index_subset(horiz_indexes, surface_plane_indexes);
@@ -452,8 +461,13 @@ void Open3DPointCloud::SegmentBlocks(
             
             //Segment the leftovers
             double leftover_eps = 0.01; 
-            std::vector<int> leftover_segments =  leftovers_cloud_ptr->ClusterDBSCAN(leftover_eps, 2, false);
-            
+            std::vector<int> leftover_segments;
+            if (leftovers_cloud_ptr->points_.size() > 4){
+               leftover_segments =  leftovers_cloud_ptr->ClusterDBSCAN(leftover_eps, 4, false);
+            }
+            else{
+                return;
+            }
             //sort each cluster
             std::vector<std::vector<size_t>> leftover_segments_indexes = FilterSegmentIndexes(leftover_segments);
 
@@ -481,30 +495,38 @@ void Open3DPointCloud::SegmentBlocks(
                 }
 
                 //try segmenting the faces:
-                std::vector<size_t> floor_indexes2, horiz_indexes2, vert_indexes2;
-                std::tie(floor_indexes2, horiz_indexes2, vert_indexes2) =  
+                std::vector<size_t> floor_indexes_block, horiz_indexes_block, vert_indexes_block;
+                std::tie(floor_indexes_block, horiz_indexes_block, vert_indexes_block) =  
                   SeperateHorizandVertNorms(leftovers_segment->points_, leftovers_segment->normals_, FLOOR_THRESHOLD);
 
                 
                 bool require_vertical_side = true;
                 //Probably a real block should have at least some horizontal and vertical indexes...
-                if (horiz_indexes2.size() == 0 ){
+                if (horiz_indexes_block.size() == 0 ){
                       continue;  //Not a block...
                 }else{
-                   if (require_vertical_side && vert_indexes2.size()==0)
+                   if (require_vertical_side && vert_indexes_block.size()==0)
                       continue;  //Not a block...
                 }
 
-                DetectedBlock block = ExtractBlock(horiz_indexes2, 
-                        vert_indexes2,
+                DetectedBlock block = ExtractBlock(horiz_indexes_block, 
+                        vert_indexes_block,
                         leftovers_segment,
                         largest_plane_surface_height);
+
+
                 if (block.block_top_center.norm() > 0.0){
+                  if (debug_level == DebugLevel::Visual) {
+                    visualization::DrawGeometries({ leftovers_segment }, "ACTUAL Block:  " + std::to_string(leftovers_segment->points_.size()), 640, 480, 50, 50, true);
+                  }
+                  
                   block_list.push_back(block);
                 }
               }
               else{
-                std::cout << "Skipping non block." << std::endl;
+                if (debug_level >= DebugLevel::Verbal) {
+                  std::cout << "Skipping non block." << std::endl;
+                }
               }
             }
         } else {
@@ -517,8 +539,8 @@ void Open3DPointCloud::SegmentBlocks(
 }
 
 
-DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes2, 
-  std::vector<size_t> &vert_indexes2,
+DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes, 
+  std::vector<size_t> &vert_indexes,
   std::shared_ptr<geometry::PointCloud> leftovers_segment,
   double surface_height){
   DetectedBlock block;
@@ -527,7 +549,7 @@ DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes2
   
   Eigen::Vector4d block_top_plane;
   std::vector<size_t> block_top_plane_indexes;
-  std::shared_ptr<geometry::PointCloud> horizface_cloud_ptr = leftovers_segment->SelectByIndex(horiz_indexes2);
+  std::shared_ptr<geometry::PointCloud> horizface_cloud_ptr = leftovers_segment->SelectByIndex(horiz_indexes);
   Eigen::Vector3d block_top_center = horizface_cloud_ptr->GetCenter();
   
   if (block_top_center[2] < (surface_height - (block_size * 1.5))){
@@ -535,7 +557,12 @@ DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes2
   }
   
   //Tweak as needed to suit the accuracy of your depth camera...
-  std::tie(block_top_plane, block_top_plane_indexes) = horizface_cloud_ptr->SegmentPlane(0.005, 4, 5);
+  if ( horizface_cloud_ptr->points_.size() < 10 ) return block;
+  std::tie(block_top_plane, block_top_plane_indexes) = horizface_cloud_ptr->SegmentPlane(0.005, 10, 2);
+  if (debug_level >= DebugLevel::Verbal) {
+      PrintPlaneEquation(block_top_plane);
+  }
+  
   if (debug_level == DebugLevel::Verbal){
     auto box_top_center_marker = geometry::TriangleMesh::CreateSphere(0.001);  //1 mm sphere
     box_top_center_marker->PaintUniformColor(debug_colors[0]);
@@ -545,7 +572,7 @@ DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes2
     }
   }
   
-  std::shared_ptr<geometry::PointCloud> verticalfaces_cloud_ptr = leftovers_segment->SelectByIndex(vert_indexes2);
+  std::shared_ptr<geometry::PointCloud> verticalfaces_cloud_ptr = leftovers_segment->SelectByIndex(vert_indexes);
 
   if (debug_level == DebugLevel::Visual){
     visualization::DrawGeometries({verticalfaces_cloud_ptr}, "ALL VERTICAL BLOCK FACES (with normals)...", 640, 480, 50, 50, true); 
@@ -554,7 +581,7 @@ DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes2
   std::shared_ptr<geometry::PointCloud> best_normals_cloud;
   Eigen::Vector3d vertical_side_normal = Eigen::Vector3d(0.0, 0.0, 1.0);
 
-  if (vert_indexes2.size() > 0){
+  if (vert_indexes.size() > 4){
     vertical_side_normal = IsolateLargestVerticalSide(*verticalfaces_cloud_ptr, best_normals_cloud);
   }
   if (vertical_side_normal.norm() == 0.0) return block;
@@ -562,10 +589,22 @@ DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes2
     DebugVerticalNormalFace(*best_normals_cloud, vertical_side_normal);
   }
 
+  float average = std::accumulate( verticalfaces_cloud_ptr->points_[2].begin(), verticalfaces_cloud_ptr->points_[2].end(), 0.0)/verticalfaces_cloud_ptr->points_.size();  
+  std::cout << "Average: " << average << std::endl;
+
+  double sumOfZ = 0.0;
+
+  for(auto x: verticalfaces_cloud_ptr->points_){   
+    sumOfZ += x[2];
+  }
+  double avgOfZ = sumOfZ/verticalfaces_cloud_ptr->points_.size();
+  //Check for inside corner vs outside corner.  Blocks will always have outside corner
+  if (avgOfZ > block_top_center[2] ){
+    std::cout << "Probably not a block :( " << avgOfZ << std::endl;
+    return block;
+  }
 
   if (debug_level >= DebugLevel::Verbal) std::cout << "You made it!  You are a block! " << std::endl;
-  
-
   block.block_top_center = block_top_center;
                 block.block_normal = vertical_side_normal;
                 auto angle_around_z = std::atan(vertical_side_normal[0]/vertical_side_normal[1]);

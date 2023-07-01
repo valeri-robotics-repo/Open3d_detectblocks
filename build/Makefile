@@ -56,6 +56,40 @@ CMAKE_BINARY_DIR = /home/valerie/Open3d_example/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
+
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +111,18 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -136,6 +182,32 @@ TestVisualizer/fast:
 	$(MAKE) -f CMakeFiles/TestVisualizer.dir/build.make CMakeFiles/TestVisualizer.dir/build
 .PHONY : TestVisualizer/fast
 
+#=============================================================================
+# Target rules for targets named runTests
+
+# Build rule for target.
+runTests: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 runTests
+.PHONY : runTests
+
+# fast build rule for target.
+runTests/fast:
+	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/build
+.PHONY : runTests/fast
+
+#=============================================================================
+# Target rules for targets named detectblocks
+
+# Build rule for target.
+detectblocks: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 detectblocks
+.PHONY : detectblocks
+
+# fast build rule for target.
+detectblocks/fast:
+	$(MAKE) -f sharedlib/CMakeFiles/detectblocks.dir/build.make sharedlib/CMakeFiles/detectblocks.dir/build
+.PHONY : detectblocks/fast
+
 TestVisualizer.o: TestVisualizer.cpp.o
 
 .PHONY : TestVisualizer.o
@@ -170,6 +242,7 @@ sharedlib/src/detectblocks.o: sharedlib/src/detectblocks.cpp.o
 # target to build an object file
 sharedlib/src/detectblocks.cpp.o:
 	$(MAKE) -f CMakeFiles/DetectBlocksDemo.dir/build.make CMakeFiles/DetectBlocksDemo.dir/sharedlib/src/detectblocks.cpp.o
+	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/sharedlib/src/detectblocks.cpp.o
 .PHONY : sharedlib/src/detectblocks.cpp.o
 
 sharedlib/src/detectblocks.i: sharedlib/src/detectblocks.cpp.i
@@ -179,6 +252,7 @@ sharedlib/src/detectblocks.i: sharedlib/src/detectblocks.cpp.i
 # target to preprocess a source file
 sharedlib/src/detectblocks.cpp.i:
 	$(MAKE) -f CMakeFiles/DetectBlocksDemo.dir/build.make CMakeFiles/DetectBlocksDemo.dir/sharedlib/src/detectblocks.cpp.i
+	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/sharedlib/src/detectblocks.cpp.i
 .PHONY : sharedlib/src/detectblocks.cpp.i
 
 sharedlib/src/detectblocks.s: sharedlib/src/detectblocks.cpp.s
@@ -188,6 +262,7 @@ sharedlib/src/detectblocks.s: sharedlib/src/detectblocks.cpp.s
 # target to generate assembly for a file
 sharedlib/src/detectblocks.cpp.s:
 	$(MAKE) -f CMakeFiles/DetectBlocksDemo.dir/build.make CMakeFiles/DetectBlocksDemo.dir/sharedlib/src/detectblocks.cpp.s
+	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/sharedlib/src/detectblocks.cpp.s
 .PHONY : sharedlib/src/detectblocks.cpp.s
 
 usesharedlib/src/demo2.o: usesharedlib/src/demo2.cpp.o
@@ -217,16 +292,49 @@ usesharedlib/src/demo2.cpp.s:
 	$(MAKE) -f CMakeFiles/DetectBlocksDemo.dir/build.make CMakeFiles/DetectBlocksDemo.dir/usesharedlib/src/demo2.cpp.s
 .PHONY : usesharedlib/src/demo2.cpp.s
 
+usesharedlib/src/tests.o: usesharedlib/src/tests.cpp.o
+
+.PHONY : usesharedlib/src/tests.o
+
+# target to build an object file
+usesharedlib/src/tests.cpp.o:
+	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/usesharedlib/src/tests.cpp.o
+.PHONY : usesharedlib/src/tests.cpp.o
+
+usesharedlib/src/tests.i: usesharedlib/src/tests.cpp.i
+
+.PHONY : usesharedlib/src/tests.i
+
+# target to preprocess a source file
+usesharedlib/src/tests.cpp.i:
+	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/usesharedlib/src/tests.cpp.i
+.PHONY : usesharedlib/src/tests.cpp.i
+
+usesharedlib/src/tests.s: usesharedlib/src/tests.cpp.s
+
+.PHONY : usesharedlib/src/tests.s
+
+# target to generate assembly for a file
+usesharedlib/src/tests.cpp.s:
+	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/usesharedlib/src/tests.cpp.s
+.PHONY : usesharedlib/src/tests.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... install/strip"
+	@echo "... install"
+	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... install/local"
 	@echo "... DetectBlocksDemo"
 	@echo "... TestVisualizer"
+	@echo "... runTests"
+	@echo "... detectblocks"
 	@echo "... TestVisualizer.o"
 	@echo "... TestVisualizer.i"
 	@echo "... TestVisualizer.s"
@@ -236,6 +344,9 @@ help:
 	@echo "... usesharedlib/src/demo2.o"
 	@echo "... usesharedlib/src/demo2.i"
 	@echo "... usesharedlib/src/demo2.s"
+	@echo "... usesharedlib/src/tests.o"
+	@echo "... usesharedlib/src/tests.i"
+	@echo "... usesharedlib/src/tests.s"
 .PHONY : help
 
 

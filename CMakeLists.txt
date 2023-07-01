@@ -17,6 +17,7 @@ else()
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 endif()
 
+add_subdirectory(sharedlib)
 project(TestVisualizer LANGUAGES C CXX)
 
 # Find installed Open3D, which exports Open3D::Open3D
@@ -28,6 +29,16 @@ endif()
 if(NOT Open3D_FOUND)
     message(FATAL_ERROR "Open3D not found, please use -DCMAKE_INSTALL_PREFIX=open3d_install_dir")
 endif()
+
+
+
+# Locate GTest
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
+# Link runTests with what we want to test and the GTest and pthread library
+add_executable(runTests usesharedlib/src/tests.cpp sharedlib/src/detectblocks.cpp)
+target_link_libraries(runTests ${GTEST_LIBRARIES} pthread Open3D::Open3D)
 
 
 include_directories(/home/valerie/Open3d/include)

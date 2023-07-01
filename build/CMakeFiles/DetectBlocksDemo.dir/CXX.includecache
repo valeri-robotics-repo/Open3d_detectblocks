@@ -3896,15 +3896,3 @@ detectedblock.h
 stdio.h
 -
 
-/home/valerie/Open3d_example/usesharedlib/src/demo2.cpp
-../../sharedlib/include/detectblocks.h
-/home/valerie/Open3d_example/sharedlib/include/detectblocks.h
-iostream
--
-memory
--
-thread
--
-open3d/Open3D.h
-/home/valerie/Open3d_example/usesharedlib/src/open3d/Open3D.h
-

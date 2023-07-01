@@ -55,19 +55,41 @@ CMAKE_BINARY_DIR = /home/valerie/Open3d_example/build
 # The main recursive "all" target.
 all: CMakeFiles/DetectBlocksDemo.dir/all
 all: CMakeFiles/TestVisualizer.dir/all
+all: CMakeFiles/runTests.dir/all
+all: sharedlib/all
 
 .PHONY : all
 
 # The main recursive "preinstall" target.
-preinstall:
+preinstall: sharedlib/preinstall
 
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/DetectBlocksDemo.dir/clean
 clean: CMakeFiles/TestVisualizer.dir/clean
+clean: CMakeFiles/runTests.dir/clean
+clean: sharedlib/clean
 
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory sharedlib
+
+# Recursive "all" directory target.
+sharedlib/all: sharedlib/CMakeFiles/detectblocks.dir/all
+
+.PHONY : sharedlib/all
+
+# Recursive "preinstall" directory target.
+sharedlib/preinstall:
+
+.PHONY : sharedlib/preinstall
+
+# Recursive "clean" directory target.
+sharedlib/clean: sharedlib/CMakeFiles/detectblocks.dir/clean
+
+.PHONY : sharedlib/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/DetectBlocksDemo.dir
@@ -122,6 +144,60 @@ TestVisualizer: CMakeFiles/TestVisualizer.dir/rule
 CMakeFiles/TestVisualizer.dir/clean:
 	$(MAKE) -f CMakeFiles/TestVisualizer.dir/build.make CMakeFiles/TestVisualizer.dir/clean
 .PHONY : CMakeFiles/TestVisualizer.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/runTests.dir
+
+# All Build rule for target.
+CMakeFiles/runTests.dir/all:
+	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/depend
+	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/valerie/Open3d_example/build/CMakeFiles --progress-num=8,9,10 "Built target runTests"
+.PHONY : CMakeFiles/runTests.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/runTests.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/runTests.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 0
+.PHONY : CMakeFiles/runTests.dir/rule
+
+# Convenience name for target.
+runTests: CMakeFiles/runTests.dir/rule
+
+.PHONY : runTests
+
+# clean rule for target.
+CMakeFiles/runTests.dir/clean:
+	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/clean
+.PHONY : CMakeFiles/runTests.dir/clean
+
+#=============================================================================
+# Target rules for target sharedlib/CMakeFiles/detectblocks.dir
+
+# All Build rule for target.
+sharedlib/CMakeFiles/detectblocks.dir/all:
+	$(MAKE) -f sharedlib/CMakeFiles/detectblocks.dir/build.make sharedlib/CMakeFiles/detectblocks.dir/depend
+	$(MAKE) -f sharedlib/CMakeFiles/detectblocks.dir/build.make sharedlib/CMakeFiles/detectblocks.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/valerie/Open3d_example/build/CMakeFiles --progress-num=6,7 "Built target detectblocks"
+.PHONY : sharedlib/CMakeFiles/detectblocks.dir/all
+
+# Build rule for subdir invocation for target.
+sharedlib/CMakeFiles/detectblocks.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 sharedlib/CMakeFiles/detectblocks.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 0
+.PHONY : sharedlib/CMakeFiles/detectblocks.dir/rule
+
+# Convenience name for target.
+detectblocks: sharedlib/CMakeFiles/detectblocks.dir/rule
+
+.PHONY : detectblocks
+
+# clean rule for target.
+sharedlib/CMakeFiles/detectblocks.dir/clean:
+	$(MAKE) -f sharedlib/CMakeFiles/detectblocks.dir/build.make sharedlib/CMakeFiles/detectblocks.dir/clean
+.PHONY : sharedlib/CMakeFiles/detectblocks.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

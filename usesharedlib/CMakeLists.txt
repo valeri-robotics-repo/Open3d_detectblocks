@@ -11,7 +11,6 @@ LINK_DIRECTORIES(
 )
 
 
-
 project(DetectBlocksDemo LANGUAGES C CXX)
 
 #find_library(DetectBlocks_LIB /home/valerie/Open3d_example/sharedlib/build/libDetectBlocks.so)
@@ -21,6 +20,7 @@ project(DetectBlocksDemo LANGUAGES C CXX)
 find_package(Open3D HINTS ${CMAKE_INSTALL_PREFIX}/lib/cmake)
 find_package(DetectBlocks HINTS /home/valerie/Open3d_example/sharedlib/build)
 include_directories(/home/valerie/Open3d_example/sharedlib/include)
+
 
 add_executable(DetectBlocksDemo src/demo2.cpp ../../sharedlib/src/detectblocks.cpp)
 
