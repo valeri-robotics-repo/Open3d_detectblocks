@@ -2,13 +2,14 @@
 
 
 ## Examples
-- [ROS2 Usage Example](https://github.com/blockdetection_ros2#readme) - Project that uses this library in ROS2, step-by-step installing instructions.
+- [ROS2 Usage Example](https://github.com/valeri-robotics-repo/blockdetection_ros2#readme) - Project that uses this library in ROS2, step-by-step installing instructions.
 
 -  For a demonstration of my robot performing block detection using this library and stacking blocks, visit my website here:
 -    http://edwardtherobot.com
 
 
 How to run this project:
+
     1.  Install Open3d using the instructions provided for C++  (Python is not required):
         http://www.open3d.org/docs/release/compilation.html
 
@@ -23,12 +24,15 @@ How to run this project:
             mkdir build
             cd build
             cmake ..
-            make
+            make -j 4
             sudo make install
 
             Now this will be accessible to your ROS2 pooject.
 
-Orientation:
-    1.  The point cloud must be oriented with the Blue (Z) axis up and Red (X) axis forward, Right handed orientation:
+Orientation: The point cloud must be oriented with the Blue (Z) axis up and Red (X) axis forward, Right handed orientation.  The major surface must lie on the  X-Y plane.
+
         ![Alt text](images/zup.png?raw=true "Orientation")
     2.  The floor is the difference from the current orientation to the floor (Z) value.  If the floor is below your axis of orientation, this value will be negative.
+
+Video:
+    <video src="blockdetection.mov"></video>
