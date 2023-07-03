@@ -589,9 +589,6 @@ DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes,
     DebugVerticalNormalFace(*best_normals_cloud, vertical_side_normal);
   }
 
-  float average = std::accumulate( verticalfaces_cloud_ptr->points_[2].begin(), verticalfaces_cloud_ptr->points_[2].end(), 0.0)/verticalfaces_cloud_ptr->points_.size();  
-  std::cout << "Average: " << average << std::endl;
-
   double sumOfZ = 0.0;
 
   for(auto x: verticalfaces_cloud_ptr->points_){   
@@ -600,7 +597,7 @@ DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes,
   double avgOfZ = sumOfZ/verticalfaces_cloud_ptr->points_.size();
   //Check for inside corner vs outside corner.  Blocks will always have outside corner
   if (avgOfZ > block_top_center[2] ){
-    std::cout << "Probably not a block :( " << avgOfZ << std::endl;
+    if (debug_level >= DebugLevel::Verbal) std::cout << "Probably not a block :( " << avgOfZ << std::endl;
     return block;
   }
 

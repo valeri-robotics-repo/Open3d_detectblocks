@@ -28,4 +28,7 @@ How to run this project:
 
             Now this will be accessible to your ROS2 pooject.
 
-            
+Orientation:
+    1.  The point cloud must be oriented with the Blue (Z) axis up and Red (X) axis forward, Right handed orientation:
+        ![Alt text](images/rh_zup.jpg?raw=true "Orientation")
+    2.  The floor is the difference from the current orientation to the floor (Z) value.  If the floor is below your axis of orientation, this value will be negative.

@@ -262,6 +262,12 @@ TestVisualizer_BINARY_DIR:STATIC=/home/valerie/Open3d_example/build
 //Value Computed by CMake
 TestVisualizer_SOURCE_DIR:STATIC=/home/valerie/Open3d_example
 
+//Value Computed by CMake
+detectblocks_BINARY_DIR:STATIC=/home/valerie/Open3d_example/build/sharedlib
+
+//Value Computed by CMake
+detectblocks_SOURCE_DIR:STATIC=/home/valerie/Open3d_example/sharedlib
+
 
 ########################
 # INTERNAL cache entries

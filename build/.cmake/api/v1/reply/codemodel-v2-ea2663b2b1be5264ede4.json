@@ -65,7 +65,7 @@
 					[
 						1
 					],
-					"name" : "TestVisualizer",
+					"name" : "detectblocks",
 					"parentIndex" : 0,
 					"targetIndexes" : 
 					[
@@ -78,28 +78,28 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "DetectBlocksDemo::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-DetectBlocksDemo-Debug-bf77dc4c89166c8eb64d.json",
+					"jsonFile" : "target-DetectBlocksDemo-Debug-55bb272faba7e87d39a9.json",
 					"name" : "DetectBlocksDemo",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "TestVisualizer::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-TestVisualizer-Debug-6d6c79ac522a1de718de.json",
+					"jsonFile" : "target-TestVisualizer-Debug-620d9c60bdfe22f08b17.json",
 					"name" : "TestVisualizer",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 1,
 					"id" : "detectblocks::@f24a82888f86be82ccef",
-					"jsonFile" : "target-detectblocks-Debug-7ada375a570048d7a73c.json",
+					"jsonFile" : "target-detectblocks-Debug-73a0f9f5c6b51a67dd55.json",
 					"name" : "detectblocks",
 					"projectIndex" : 1
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "runTests::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-runTests-Debug-d0721cd68bc9df8d72ca.json",
+					"jsonFile" : "target-runTests-Debug-d76470dcb853b9d27697.json",
 					"name" : "runTests",
 					"projectIndex" : 0
 				}

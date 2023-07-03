@@ -1444,6 +1444,30 @@
 			],
 			"type" : "STATIC",
 			"value" : "/home/valerie/Open3d_example"
+		},
+		{
+			"name" : "detectblocks_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/home/valerie/Open3d_example/build/sharedlib"
+		},
+		{
+			"name" : "detectblocks_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/home/valerie/Open3d_example/sharedlib"
 		}
 	],
 	"kind" : "cache",

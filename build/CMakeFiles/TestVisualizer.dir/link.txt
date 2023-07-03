@@ -1,1 +1,1 @@
-/usr/bin/g++-8  -g   CMakeFiles/TestVisualizer.dir/TestVisualizer.cpp.o  -o TestVisualizer  -Wl,-rpath,/home/valerie/Open3d/lib /home/valerie/Open3d/lib/libOpen3D.so 
+/usr/bin/g++-8  -g   CMakeFiles/TestVisualizer.dir/TestVisualizer.cpp.o  -o TestVisualizer  -Wl,-rpath,/home/valerie/Open3d_example/build/sharedlib:/home/valerie/Open3d/lib sharedlib/libdetectblocks.so /home/valerie/Open3d/lib/libOpen3D.so /home/valerie/Open3d/lib/libOpen3D.so 

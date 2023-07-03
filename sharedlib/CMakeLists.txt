@@ -17,7 +17,7 @@ else()
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 endif()
 
-project(TestVisualizer LANGUAGES C CXX)
+project(detectblocks)
 
 # Find installed Open3D, which exports Open3D::Open3D
 if(WIN32)
@@ -30,6 +30,7 @@ if(NOT Open3D_FOUND)
 endif()
 
 include_directories(include)
+
 add_library(detectblocks SHARED src/detectblocks.cpp )
 target_link_libraries(detectblocks Open3D::Open3D)
 

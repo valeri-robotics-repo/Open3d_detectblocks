@@ -37,19 +37,19 @@ find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
 # Link runTests with what we want to test and the GTest and pthread library
-add_executable(runTests usesharedlib/src/tests.cpp sharedlib/src/detectblocks.cpp)
-target_link_libraries(runTests ${GTEST_LIBRARIES} pthread Open3D::Open3D)
+add_executable(runTests usesharedlib/src/tests.cpp)
+target_link_libraries(runTests PRIVATE detectblocks ${GTEST_LIBRARIES} pthread Open3D::Open3D )
 
 
-include_directories(/home/valerie/Open3d/include)
+#include_directories(/home/valerie/Open3d/include)
 add_executable(TestVisualizer TestVisualizer.cpp)
-target_link_libraries(TestVisualizer Open3D::Open3D)
+target_link_libraries(TestVisualizer PRIVATE detectblocks  Open3D::Open3D)
 project(DetectBlocksDemo LANGUAGES C CXX)
 # Find installed Open3D, which exports Open3D::Open3D
 find_package(DetectBlocks HINTS /home/valerie/Open3d_example/sharedlib/build)
 include_directories(/home/valerie/Open3d_example/sharedlib/include)
 add_executable(DetectBlocksDemo usesharedlib/src/demo2.cpp sharedlib/src/detectblocks.cpp)
-TARGET_LINK_LIBRARIES(DetectBlocksDemo PUBLIC  Open3D::Open3D )
+TARGET_LINK_LIBRARIES(DetectBlocksDemo PRIVATE detectblocks  PUBLIC  Open3D::Open3D )
 
 # On Windows, when BUILD_SHARED_LIBS, copy .dll to the executable directory
 if(WIN32)

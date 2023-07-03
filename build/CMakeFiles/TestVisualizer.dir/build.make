@@ -79,6 +79,8 @@ TestVisualizer_EXTERNAL_OBJECTS =
 
 TestVisualizer: CMakeFiles/TestVisualizer.dir/TestVisualizer.cpp.o
 TestVisualizer: CMakeFiles/TestVisualizer.dir/build.make
+TestVisualizer: sharedlib/libdetectblocks.so
+TestVisualizer: /home/valerie/Open3d/lib/libOpen3D.so
 TestVisualizer: /home/valerie/Open3d/lib/libOpen3D.so
 TestVisualizer: CMakeFiles/TestVisualizer.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/valerie/Open3d_example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable TestVisualizer"

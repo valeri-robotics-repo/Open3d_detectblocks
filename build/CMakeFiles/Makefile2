@@ -95,7 +95,7 @@ sharedlib/clean: sharedlib/CMakeFiles/detectblocks.dir/clean
 # Target rules for target CMakeFiles/DetectBlocksDemo.dir
 
 # All Build rule for target.
-CMakeFiles/DetectBlocksDemo.dir/all:
+CMakeFiles/DetectBlocksDemo.dir/all: sharedlib/CMakeFiles/detectblocks.dir/all
 	$(MAKE) -f CMakeFiles/DetectBlocksDemo.dir/build.make CMakeFiles/DetectBlocksDemo.dir/depend
 	$(MAKE) -f CMakeFiles/DetectBlocksDemo.dir/build.make CMakeFiles/DetectBlocksDemo.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/valerie/Open3d_example/build/CMakeFiles --progress-num=1,2,3 "Built target DetectBlocksDemo"
@@ -103,7 +103,7 @@ CMakeFiles/DetectBlocksDemo.dir/all:
 
 # Build rule for subdir invocation for target.
 CMakeFiles/DetectBlocksDemo.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/DetectBlocksDemo.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 0
 .PHONY : CMakeFiles/DetectBlocksDemo.dir/rule
@@ -122,7 +122,7 @@ CMakeFiles/DetectBlocksDemo.dir/clean:
 # Target rules for target CMakeFiles/TestVisualizer.dir
 
 # All Build rule for target.
-CMakeFiles/TestVisualizer.dir/all:
+CMakeFiles/TestVisualizer.dir/all: sharedlib/CMakeFiles/detectblocks.dir/all
 	$(MAKE) -f CMakeFiles/TestVisualizer.dir/build.make CMakeFiles/TestVisualizer.dir/depend
 	$(MAKE) -f CMakeFiles/TestVisualizer.dir/build.make CMakeFiles/TestVisualizer.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/valerie/Open3d_example/build/CMakeFiles --progress-num=4,5 "Built target TestVisualizer"
@@ -130,7 +130,7 @@ CMakeFiles/TestVisualizer.dir/all:
 
 # Build rule for subdir invocation for target.
 CMakeFiles/TestVisualizer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/TestVisualizer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 0
 .PHONY : CMakeFiles/TestVisualizer.dir/rule
@@ -149,15 +149,15 @@ CMakeFiles/TestVisualizer.dir/clean:
 # Target rules for target CMakeFiles/runTests.dir
 
 # All Build rule for target.
-CMakeFiles/runTests.dir/all:
+CMakeFiles/runTests.dir/all: sharedlib/CMakeFiles/detectblocks.dir/all
 	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/depend
 	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/valerie/Open3d_example/build/CMakeFiles --progress-num=8,9,10 "Built target runTests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/valerie/Open3d_example/build/CMakeFiles --progress-num=8,9 "Built target runTests"
 .PHONY : CMakeFiles/runTests.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/runTests.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/runTests.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/valerie/Open3d_example/build/CMakeFiles 0
 .PHONY : CMakeFiles/runTests.dir/rule

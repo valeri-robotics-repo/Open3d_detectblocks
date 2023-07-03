@@ -94,6 +94,8 @@ DetectBlocksDemo_EXTERNAL_OBJECTS =
 DetectBlocksDemo: CMakeFiles/DetectBlocksDemo.dir/usesharedlib/src/demo2.cpp.o
 DetectBlocksDemo: CMakeFiles/DetectBlocksDemo.dir/sharedlib/src/detectblocks.cpp.o
 DetectBlocksDemo: CMakeFiles/DetectBlocksDemo.dir/build.make
+DetectBlocksDemo: sharedlib/libdetectblocks.so
+DetectBlocksDemo: /home/valerie/Open3d/lib/libOpen3D.so
 DetectBlocksDemo: /home/valerie/Open3d/lib/libOpen3D.so
 DetectBlocksDemo: CMakeFiles/DetectBlocksDemo.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/valerie/Open3d_example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable DetectBlocksDemo"

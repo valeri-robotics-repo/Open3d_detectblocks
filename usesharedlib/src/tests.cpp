@@ -6,6 +6,10 @@
 #include <thread>
 #include "open3d/Open3D.h"
 #include <math.h>
+
+#include <chrono>
+
+
 #define EXPECT_IN_RANGE(VAL, MIN, MAX) \
     EXPECT_GE((VAL), (MIN));           \
     EXPECT_LE((VAL), (MAX))
@@ -18,7 +22,7 @@
 TEST(BlockDetectionTest, Cloud1) { 
     std::vector<double> horizontal_surface_height;
     int floor_surface_height = 0.20;  //Anything below this is floor
-    auto plyfilename ="/home/valerie/edward2_ws/block_object_cloud.ply";
+    auto plyfilename ="/home/valerie/blockdetection_ros2/plys/debugdetectblock2.ply";
     //auto plyfilename ="/home/valerie/sample_ros2/debugdetectblock.ply";
     auto pcd_down = open3d::io::CreatePointCloudFromFile(plyfilename);
     auto coord_axis = geometry::TriangleMesh::CreateCoordinateFrame(1.0, Eigen::Vector3d(0,0,0));
@@ -30,18 +34,28 @@ TEST(BlockDetectionTest, Cloud1) {
     std::vector<double> horizontal_surface_heights;
     std::vector<DetectedBlock> block_list;
 
-    Open3DPointCloud o3dpc(0.03f, false, DebugLevel::Visual );
+    Open3DPointCloud o3dpc(0.03f, false, DebugLevel::None );
+
+    auto start_time = std::chrono::high_resolution_clock::now();
 
     o3dpc.SegmentBlocks(
         *pcd_down,
         horizontal_surface_heights,
         block_list, 
         -1.3);
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+
+    //auto diff_time = 1e-6
+    std::cout << "Time difference:"
+      << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << " ms" << std::endl;
+
+
     //std::cout << "SURFACE HEIGHT " << horizontal_surface_heights[0] << std::endl;
     
     std::cout << "FOUND " << block_list.size() << " BLOCKS!" << std::endl;
    
-    /*
+    
     for (auto &block : block_list){
 
         auto box_top_center_marker = geometry::TriangleMesh::CreateSphere(0.01);  //1 cm sphere
@@ -65,11 +79,11 @@ TEST(BlockDetectionTest, Cloud1) {
         std::cout << "---------------------------------" << std::endl;
     }
 
-    //visualization::DrawGeometries(geometry_ptrs, 
-    //                                  "Target Point Cloud");
-    */
+    visualization::DrawGeometries(geometry_ptrs, 
+                                      "Target Point Cloud");
+    
     ASSERT_EQ(block_list.size(), 3);
-    ASSERT_IN_RANGE(horizontal_surface_heights[0], -0.7, -0.6);
+    ASSERT_IN_RANGE(horizontal_surface_heights[0], -0.4, -0.38);
 }
 /*
 TEST(SquareRootTest, NegativeNos) {

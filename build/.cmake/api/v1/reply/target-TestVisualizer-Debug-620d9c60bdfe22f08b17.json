@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "sharedlib/libdetectblocks.so"
+			"path" : "TestVisualizer"
 		}
 	],
 	"backtrace" : 1,
@@ -10,15 +10,13 @@
 	{
 		"commands" : 
 		[
-			"add_library",
-			"install",
-			"INSTALL",
+			"add_executable",
 			"target_link_libraries",
 			"include_directories"
 		],
 		"files" : 
 		[
-			"sharedlib/CMakeLists.txt"
+			"CMakeLists.txt"
 		],
 		"nodes" : 
 		[
@@ -28,31 +26,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 33,
+				"line" : 45,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 37,
+				"line" : 46,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 39,
-				"parent" : 0
-			},
-			{
-				"command" : 3,
-				"file" : 0,
-				"line" : 34,
-				"parent" : 0
-			},
-			{
-				"command" : 4,
-				"file" : 0,
-				"line" : 32,
+				"line" : 50,
 				"parent" : 0
 			}
 		]
@@ -63,7 +49,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -fPIC  "
+					"fragment" : "-g  "
 				},
 				{
 					"fragment" : "-std=gnu++14"
@@ -72,38 +58,35 @@
 			"defines" : 
 			[
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"define" : "FMT_HEADER_ONLY=0"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"define" : "FMT_STRING_ALIAS=1"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"define" : "FMT_USE_WINDOWS_H=0"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"define" : "_GLIBCXX_USE_CXX11_ABI=1"
-				},
-				{
-					"define" : "detectblocks_EXPORTS"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 5,
+					"backtrace" : 3,
 					"path" : "/home/valerie/Open3d_example/sharedlib/include"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "/home/valerie/Open3d/include"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "/home/valerie/Open3d/include/open3d/3rdparty"
 				}
@@ -115,59 +98,54 @@
 			]
 		}
 	],
-	"id" : "detectblocks::@f24a82888f86be82ccef",
-	"install" : 
-	{
-		"destinations" : 
-		[
-			{
-				"backtrace" : 2,
-				"path" : "/usr/lib"
-			},
-			{
-				"backtrace" : 2,
-				"path" : "/usr/lib"
-			},
-			{
-				"backtrace" : 3,
-				"path" : "lib"
-			},
-			{
-				"backtrace" : 3,
-				"path" : "lib"
-			}
-		],
-		"prefix" : 
+	"dependencies" : 
+	[
 		{
-			"path" : "/usr/local"
+			"backtrace" : 2,
+			"id" : "detectblocks::@f24a82888f86be82ccef"
 		}
-	},
+	],
+	"id" : "TestVisualizer::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
 		[
 			{
+				"fragment" : "-g",
+				"role" : "flags"
+			},
+			{
 				"fragment" : "",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-Wl,-rpath,/home/valerie/Open3d/lib:",
+				"fragment" : "-Wl,-rpath,/home/valerie/Open3d_example/build/sharedlib:/home/valerie/Open3d/lib",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 4,
+				"backtrace" : 2,
+				"fragment" : "sharedlib/libdetectblocks.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "/home/valerie/Open3d/lib/libOpen3D.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
 				"fragment" : "/home/valerie/Open3d/lib/libOpen3D.so",
 				"role" : "libraries"
 			}
 		],
 		"language" : "CXX"
 	},
-	"name" : "detectblocks",
-	"nameOnDisk" : "libdetectblocks.so",
+	"name" : "TestVisualizer",
+	"nameOnDisk" : "TestVisualizer",
 	"paths" : 
 	{
-		"build" : "sharedlib",
-		"source" : "sharedlib"
+		"build" : ".",
+		"source" : "."
 	},
 	"sourceGroups" : 
 	[
@@ -184,9 +162,9 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "sharedlib/src/detectblocks.cpp",
+			"path" : "TestVisualizer.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],
-	"type" : "SHARED_LIBRARY"
+	"type" : "EXECUTABLE"
 }

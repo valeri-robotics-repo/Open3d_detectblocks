@@ -242,7 +242,6 @@ sharedlib/src/detectblocks.o: sharedlib/src/detectblocks.cpp.o
 # target to build an object file
 sharedlib/src/detectblocks.cpp.o:
 	$(MAKE) -f CMakeFiles/DetectBlocksDemo.dir/build.make CMakeFiles/DetectBlocksDemo.dir/sharedlib/src/detectblocks.cpp.o
-	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/sharedlib/src/detectblocks.cpp.o
 .PHONY : sharedlib/src/detectblocks.cpp.o
 
 sharedlib/src/detectblocks.i: sharedlib/src/detectblocks.cpp.i
@@ -252,7 +251,6 @@ sharedlib/src/detectblocks.i: sharedlib/src/detectblocks.cpp.i
 # target to preprocess a source file
 sharedlib/src/detectblocks.cpp.i:
 	$(MAKE) -f CMakeFiles/DetectBlocksDemo.dir/build.make CMakeFiles/DetectBlocksDemo.dir/sharedlib/src/detectblocks.cpp.i
-	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/sharedlib/src/detectblocks.cpp.i
 .PHONY : sharedlib/src/detectblocks.cpp.i
 
 sharedlib/src/detectblocks.s: sharedlib/src/detectblocks.cpp.s
@@ -262,7 +260,6 @@ sharedlib/src/detectblocks.s: sharedlib/src/detectblocks.cpp.s
 # target to generate assembly for a file
 sharedlib/src/detectblocks.cpp.s:
 	$(MAKE) -f CMakeFiles/DetectBlocksDemo.dir/build.make CMakeFiles/DetectBlocksDemo.dir/sharedlib/src/detectblocks.cpp.s
-	$(MAKE) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/sharedlib/src/detectblocks.cpp.s
 .PHONY : sharedlib/src/detectblocks.cpp.s
 
 usesharedlib/src/demo2.o: usesharedlib/src/demo2.cpp.o
