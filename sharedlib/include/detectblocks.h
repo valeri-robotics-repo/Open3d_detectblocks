@@ -25,7 +25,7 @@ class Open3DPointCloud {
 public:
     Open3DPointCloud(double _block_size, bool _use_plane, DebugLevel debug_level);
     void overrideMinClusterSize(int mcs);
-    int FindLargestCloudIndex(std::vector<std::vector<size_t>> _indexes);
+    int FindLargestCloudIndex(const std::vector<std::vector<size_t>> _indexes);
     std::vector<size_t> ExtractLargestPlane(const geometry::PointCloud& plane_cloud_ptr,
         Eigen::Vector4d& plane_equation,
         std::shared_ptr<geometry::PointCloud>& leftovers_cloud_ptr);
@@ -34,7 +34,6 @@ public:
         const geometry::PointCloud& verticalfaces_cloud_ptr,
         std::shared_ptr<geometry::PointCloud>& best_normals_cloud);
     Eigen::Vector3d AverageOfVector3d(std::vector<Eigen::Vector3d> vectorVector3d);
-    //int FindLargestCloudIndex(std::vector<std::vector<size_t>> _indexes);
     void PrintPlaneEquation(Eigen::Vector4d plane_equation);
     geometry::LineSet CreateLine(Eigen::Vector3d start, Eigen::Vector3d end);
     bool SavePointCloud(std::string filename_ply, geometry::PointCloud pcd);

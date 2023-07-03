@@ -25,7 +25,7 @@ TEST(BlockDetectionTest, Cloud1) {
     auto plyfilename ="../plys/debugdetectblock2.ply";
     //auto plyfilename ="/home/valerie/sample_ros2/debugdetectblock.ply";
     auto pcd_down = open3d::io::CreatePointCloudFromFile(plyfilename);
-    auto coord_axis = geometry::TriangleMesh::CreateCoordinateFrame(1.0, Eigen::Vector3d(0,0,0));
+    auto coord_axis = geometry::TriangleMesh::CreateCoordinateFrame(0.30, Eigen::Vector3d(0,0,0));
 
     pcd_down = pcd_down->UniformDownSample(2);
     std::vector<std::shared_ptr<const geometry::Geometry>> geometry_ptrs;

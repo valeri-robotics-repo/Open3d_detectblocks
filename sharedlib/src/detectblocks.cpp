@@ -37,7 +37,7 @@ Eigen::Vector3d Open3DPointCloud::AverageOfVector3d(std::vector<Eigen::Vector3d>
   return avgOfVectors;
 }
 
-int Open3DPointCloud::FindLargestCloudIndex(std::vector<std::vector<size_t>> _indexes){
+int Open3DPointCloud::FindLargestCloudIndex(const std::vector<std::vector<size_t>> _indexes){
   int biggest_cloud_idx = -1;
   int cur_size = 0;
   for (int _i = 0; _i < _indexes.size(); _i ++ ){
@@ -591,7 +591,7 @@ DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes,
 
   double sumOfZ = 0.0;
 
-  for(auto x: verticalfaces_cloud_ptr->points_){   
+  for(auto &x: verticalfaces_cloud_ptr->points_){   
     sumOfZ += x[2];
   }
   double avgOfZ = sumOfZ/verticalfaces_cloud_ptr->points_.size();
