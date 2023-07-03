@@ -22,7 +22,7 @@
 TEST(BlockDetectionTest, Cloud1) { 
     std::vector<double> horizontal_surface_height;
     int floor_surface_height = 0.20;  //Anything below this is floor
-    auto plyfilename ="/home/valerie/blockdetection_ros2/plys/debugdetectblock2.ply";
+    auto plyfilename ="../plys/debugdetectblock2.ply";
     //auto plyfilename ="/home/valerie/sample_ros2/debugdetectblock.ply";
     auto pcd_down = open3d::io::CreatePointCloudFromFile(plyfilename);
     auto coord_axis = geometry::TriangleMesh::CreateCoordinateFrame(1.0, Eigen::Vector3d(0,0,0));
