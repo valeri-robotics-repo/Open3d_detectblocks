@@ -413,7 +413,7 @@ void Open3DPointCloud::SegmentBlocks(
 
         FLOOR_THRESHOLD = floor_threshold;
 
-        if (debug_level >= DebugLevel::Verbal) std::cout << "BLOCK DETECTION V1.0.0 " << std::endl;
+        if (debug_level >= DebugLevel::Verbal) std::cout << "BLOCK DETECTION V1.0.2" << std::endl;
 
         if (!pcd_down.HasNormals()) {
           pcd_down.EstimateNormals();
@@ -458,6 +458,20 @@ void Open3DPointCloud::SegmentBlocks(
             horizontal_surface_height.push_back(-1.0 * horiz_plane_equation[3]);
             if (debug_level >= DebugLevel::Verbal) std::cout << "horizontal_surface_height: " << -1 * horiz_plane_equation[3] << std::endl;
             largest_plane_surface_height = -1 * horiz_plane_equation[3];
+
+
+            //Crop the point cloud so you only have points above the surface:
+            const Eigen::Vector3d center(0.0, 0.0, largest_plane_surface_height + 0.06);
+            Eigen::Matrix3d R = Eigen::Matrix<double, 3, 3>::Identity();
+            Eigen::Vector3d extent(2.0, 2.0, 0.3);
+            open3d::geometry::OrientedBoundingBox obb(center, R, extent);
+
+            leftovers_cloud_ptr = leftovers_cloud_ptr->Crop(obb);
+
+            if (debug_level == DebugLevel::Visual){
+              visualization::DrawGeometries({leftovers_cloud_ptr}, "Cropped point cloud"); 
+            }
+
             
             //Segment the leftovers
             double leftover_eps = 0.01; 
@@ -485,8 +499,10 @@ void Open3DPointCloud::SegmentBlocks(
               Eigen::Vector3d diff_bounds = GetObjectBounds(*leftovers_segment, min_bounds, max_bounds);
               
               if (diff_bounds[0] == 0.0) continue;
-              if (min_bounds[2] < horizontal_surface_height[0] - block_size) continue;
-
+              if (max_bounds[2] < horizontal_surface_height[0]) {
+                std::cout << "Skipping due to bad surface height!" << horizontal_surface_height[0] - block_size << " MIN:  " << min_bounds[2]  << std::endl;
+                continue;
+              }
               if (diff_bounds[0] < max_block_size && diff_bounds[1] < max_block_size && diff_bounds[2] < max_block_size){
                 if (debug_level >= DebugLevel::Verbal) std::cout << "Found potential block. " << std::endl;
 
@@ -525,7 +541,7 @@ void Open3DPointCloud::SegmentBlocks(
               }
               else{
                 if (debug_level >= DebugLevel::Verbal) {
-                  std::cout << "Skipping non block." << std::endl;
+                  std::cout << "Skipping non block DUE TO SIZE." << std::endl;
                 }
               }
             }

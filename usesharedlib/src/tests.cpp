@@ -34,7 +34,7 @@ TEST(BlockDetectionTest, Cloud1) {
     std::vector<double> horizontal_surface_heights;
     std::vector<DetectedBlock> block_list;
 
-    Open3DPointCloud o3dpc(0.03f, false, DebugLevel::None );
+    Open3DPointCloud o3dpc(0.03f, false, DebugLevel::Visual );
 
     auto start_time = std::chrono::high_resolution_clock::now();
 
