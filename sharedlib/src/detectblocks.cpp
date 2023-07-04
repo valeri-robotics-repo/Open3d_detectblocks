@@ -470,7 +470,7 @@ void Open3DPointCloud::SegmentBlocks(
             //Crop the point cloud so you only have points above the surface:
             const Eigen::Vector3d center(0.0, 0.0, largest_plane_surface_height);
             Eigen::Matrix3d R = Eigen::Matrix<double, 3, 3>::Identity();
-            Eigen::Vector3d extent(2.0, 2.0, 0.1);
+            Eigen::Vector3d extent(2.0, 2.0, 0.2);
             open3d::geometry::OrientedBoundingBox obb(center, R, extent);
 
             leftovers_cloud_ptr = leftovers_cloud_ptr->Crop(obb);
