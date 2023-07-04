@@ -35,4 +35,5 @@ Orientation: The point cloud must be oriented with the Blue (Z) axis up and Red 
     2.  The floor is the difference from the current orientation to the floor (Z) value.  If the floor is below your axis of orientation, this value will be negative.
 
 Video:
-    <video src="blockdetection.mov"></video>
+    This is my robot stacking blocks using this library:
+    <video src="images/IMG_1711.MOV"></video>
