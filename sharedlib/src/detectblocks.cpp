@@ -88,8 +88,8 @@ std::tuple<std::vector<size_t>, std::vector<size_t>, std::vector<size_t>>
 
     size_t closest_idx = -1;
 
-    double norm_min = 0.5;
-    double norm_max = 0.8;
+    double norm_min = 0.7;
+    double norm_max = 0.9;
 
     for (size_t idx = 0; idx < norms.size(); idx++) {
         auto &point = points[idx];
@@ -105,7 +105,7 @@ std::tuple<std::vector<size_t>, std::vector<size_t>, std::vector<size_t>>
             if (point.norm() != 0.0) {
               if (abs(norm(2)) > norm_max) {
                 horiz_indexes.push_back(idx);
-              } else if ( abs(norm(2)) < 0.5 ) {
+              } else if ( abs(norm(2)) < norm_min) {
                 vert_indexes.push_back(idx);
               }
             }
@@ -246,22 +246,29 @@ Eigen::Vector3d Open3DPointCloud::IsolateLargestVerticalSide(const geometry::Poi
     Eigen::Vector3d avg_norm = Eigen::Vector3d(0.0,0.0,0.0);
     geometry::PointCloud normals_cloud(verticalfaces_cloud.normals_);
     
-    double normdist_eps = 0.05; //this is the normals distance, so this can be bigger...
+    double normdist_eps = 0.05; //this is the normals distance, so this can be bigger or smaller depending upon the accuracy of your camera...
     std::vector<int> normals_clusters;
     if (normals_cloud.points_.size() >= 4 ){
       normals_clusters = normals_cloud.ClusterDBSCAN(normdist_eps, 4, false);
     }
-    else return Eigen::Vector3d(0.0, 0.0, 0.0);
-
+    else {
+      return Eigen::Vector3d(0.0, 0.0, 0.0);
+    }
     std::vector<std::vector<size_t>> normals_clusters_indexes =  FilterSegmentIndexes(normals_clusters);
-
 
     //map indexes back to cloud:
     int biggest_cloud_idx = FindLargestCloudIndex(normals_clusters_indexes);
 
     if (biggest_cloud_idx < 0) {
       std::cout << "It was all noise :(" << std::endl;
-      return Eigen::Vector3d(0.0, 0.0, 0.0);
+      //try again,,,
+      normdist_eps = 0.10;
+      normals_clusters = normals_cloud.ClusterDBSCAN(normdist_eps, 4, false);
+      normals_clusters_indexes =  FilterSegmentIndexes(normals_clusters);
+      biggest_cloud_idx = FindLargestCloudIndex(normals_clusters_indexes);
+      if (biggest_cloud_idx < 0) {
+        return Eigen::Vector3d(0.0, 0.0, 0.0);
+      }
     }
     auto normal = normals_clusters_indexes[biggest_cloud_idx];
     if (normal.size()> 0){
@@ -461,9 +468,9 @@ void Open3DPointCloud::SegmentBlocks(
 
 
             //Crop the point cloud so you only have points above the surface:
-            const Eigen::Vector3d center(0.0, 0.0, largest_plane_surface_height + 0.06);
+            const Eigen::Vector3d center(0.0, 0.0, largest_plane_surface_height);
             Eigen::Matrix3d R = Eigen::Matrix<double, 3, 3>::Identity();
-            Eigen::Vector3d extent(2.0, 2.0, 0.3);
+            Eigen::Vector3d extent(2.0, 2.0, 0.1);
             open3d::geometry::OrientedBoundingBox obb(center, R, extent);
 
             leftovers_cloud_ptr = leftovers_cloud_ptr->Crop(obb);
@@ -499,10 +506,10 @@ void Open3DPointCloud::SegmentBlocks(
               Eigen::Vector3d diff_bounds = GetObjectBounds(*leftovers_segment, min_bounds, max_bounds);
               
               if (diff_bounds[0] == 0.0) continue;
-              if (max_bounds[2] < horizontal_surface_height[0]) {
-                std::cout << "Skipping due to bad surface height!" << horizontal_surface_height[0] - block_size << " MIN:  " << min_bounds[2]  << std::endl;
-                continue;
-              }
+              //if (max_bounds[2] < horizontal_surface_height[0]) {
+              //  if (debug_level >= DebugLevel::Verbal)  std::cout << "Skipping due to bad surface height!" << horizontal_surface_height[0] - block_size << " MIN:  " << min_bounds[2]  << std::endl;
+              //  //continue;
+              //}
               if (diff_bounds[0] < max_block_size && diff_bounds[1] < max_block_size && diff_bounds[2] < max_block_size){
                 if (debug_level >= DebugLevel::Verbal) std::cout << "Found potential block. " << std::endl;
 
@@ -518,8 +525,11 @@ void Open3DPointCloud::SegmentBlocks(
                 
                 bool require_vertical_side = true;
                 //Probably a real block should have at least some horizontal and vertical indexes...
-                if (horiz_indexes_block.size() == 0 ){
-                      continue;  //Not a block...
+                if (horiz_indexes_block.size() <= 10 ){
+
+                  if (debug_level >= DebugLevel::Verbal) 
+                    std::cout << "Insufficient Horizontal Surface" << std::endl;
+                  continue;  //Not a block...
                 }else{
                    if (require_vertical_side && vert_indexes_block.size()==0)
                       continue;  //Not a block...
@@ -566,6 +576,12 @@ DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes,
   Eigen::Vector4d block_top_plane;
   std::vector<size_t> block_top_plane_indexes;
   std::shared_ptr<geometry::PointCloud> horizface_cloud_ptr = leftovers_segment->SelectByIndex(horiz_indexes);
+
+
+
+  if (debug_level == DebugLevel::Visual){
+    visualization::DrawGeometries({horizface_cloud_ptr}, "ALL HORIZONTAL (with normals)...", 640, 480, 50, 50, true); 
+  }
   Eigen::Vector3d block_top_center = horizface_cloud_ptr->GetCenter();
   
   if (block_top_center[2] < (surface_height - (block_size * 1.5))){
@@ -595,7 +611,7 @@ DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes,
   }
 
   std::shared_ptr<geometry::PointCloud> best_normals_cloud;
-  Eigen::Vector3d vertical_side_normal = Eigen::Vector3d(0.0, 0.0, 1.0);
+  Eigen::Vector3d vertical_side_normal = Eigen::Vector3d(0.0, 0.0, 0.0);
 
   if (vert_indexes.size() > 4){
     vertical_side_normal = IsolateLargestVerticalSide(*verticalfaces_cloud_ptr, best_normals_cloud);

@@ -80,7 +80,7 @@ public:
         DebugLevel debug_level = DebugLevel::Visual;
         bool use_plane = false;
         double block_size = 0.03;  //Block size in cm
-        double max_block_size = block_size * 3.0; //set this to your tolerance
+        double max_block_size = block_size * 4.0; //set this to your tolerance
         size_t min_cluster_size = 30;
         double largest_plane_surface_height = 0.0;
         std::vector<Eigen::Vector3d> debug_colors = { Eigen::Vector3d(1.0, 0.0, 0.0), Eigen::Vector3d(0.0, 1.0, 0.0),
