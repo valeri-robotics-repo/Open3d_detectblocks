@@ -94,6 +94,9 @@ double angleToVerticalPlane(Eigen::Vector3d vv){
 
 
 //For the point cloud we are getting, the floor is z (2), < 0.2 ...
+//All points are normalized.
+//Think of the UNIT SPHERE.  Anything where abs(z) > 0.9 is very horizontal
+//any point where Z < 0.4 are pretty vertical.
 std::tuple<std::vector<size_t>, std::vector<size_t>, std::vector<size_t>>
     Open3DPointCloud::SeperateHorizandVertNorms(const std::vector<Eigen::Vector3d> &points,
                           const std::vector<Eigen::Vector3d> &norms,
@@ -104,7 +107,7 @@ std::tuple<std::vector<size_t>, std::vector<size_t>, std::vector<size_t>>
 
     size_t closest_idx = -1;
 
-    double norm_min = 0.5;
+    double norm_min = 0.4;
     double norm_max = 0.9;
 
     for (size_t idx = 0; idx < norms.size(); idx++) {
@@ -122,9 +125,14 @@ std::tuple<std::vector<size_t>, std::vector<size_t>, std::vector<size_t>>
               if (abs(norm(2)) > norm_max) {
                 horiz_indexes.push_back(idx);
               } else {
-                auto ang = angleToHorizPlane(norm);
-                if (abs(ang) < 0.6)
+                if (abs(norm(2)) < norm_min ){
                   vert_indexes.push_back(idx); 
+                }
+                else{
+
+                  std::cout << "Neither? ..." << norm << std::endl;
+                  std::cout << angleToHorizPlane(norm) << std::endl;
+                }
               }
             }
         }
@@ -402,7 +410,7 @@ std::shared_ptr<geometry::PointCloud> Open3DPointCloud::SegmentHorizontalSurface
             std::cout << "No horizontal points, Skipping." << std::endl;
         }        
     } catch (std::exception &ex) {
-        std::cout << "SegmentPointCloud Error:  " << ex.what()
+        std::cout << "SegmentHorizontalSurface Error:  " << ex.what()
                     << std::endl;
     }
     
@@ -521,19 +529,21 @@ void Open3DPointCloud::SegmentBlocks(
               //    visualization::DrawGeometries({ leftovers_segment }, "Cloud Cluster:  " + std::to_string(leftovers_segment->points_.size()), 640, 480, 50, 50, true);
               //}
               
-              Eigen::Vector3d min_bounds, max_bounds;
-              Eigen::Vector3d diff_bounds = GetObjectBounds(*leftovers_segment, min_bounds, max_bounds);
+              //Eigen::Vector3d min_bounds, max_bounds;
+              //Eigen::Vector3d diff_bounds = GetObjectBounds(*leftovers_segment, min_bounds, max_bounds);
+              auto bb = leftovers_segment->GetOrientedBoundingBox();
               
-              if (diff_bounds[0] == 0.0) continue;
+              //if (diff_bounds[0] == 0.0) continue;
               //if (max_bounds[2] < horizontal_surface_height[0]) {
               //  if (debug_level >= DebugLevel::Verbal)  std::cout << "Skipping due to bad surface height!" << horizontal_surface_height[0] - block_size << " MIN:  " << min_bounds[2]  << std::endl;
               //  //continue;
               //}
-              if (diff_bounds[0] < max_block_size && diff_bounds[1] < max_block_size && diff_bounds[2] < max_block_size){
+              if (bb.extent_[0] < max_block_size && bb.extent_[1] < max_block_size && bb.extent_[2] < max_block_size){
                 if (debug_level >= DebugLevel::Verbal) std::cout << "Found potential block. " << std::endl;
-
                 if (debug_level == DebugLevel::Visual) {
-                    visualization::DrawGeometries({ leftovers_segment }, "Potential Block:  " + std::to_string(leftovers_segment->points_.size()), 640, 480, 50, 50, true);
+                    std::string title = "Potential Block:  " + std::to_string(leftovers_segment->points_.size()) + " " + std::to_string(bb.extent_[0]) + " x "
+                  + std::to_string(bb.extent_[0]) + " x " +  std::to_string(bb.extent_[2]); 
+                    visualization::DrawGeometries({ leftovers_segment }, title, 640, 480, 50, 50, true);
                 }
 
                 //try segmenting the faces:
@@ -578,7 +588,7 @@ void Open3DPointCloud::SegmentBlocks(
             std::cout << "No horizontal points, Skipping." << std::endl;
         }        
     } catch (std::exception &ex) {
-        std::cout << "SegmentPointCloud Error:  " << ex.what()
+        std::cout << "SegmentBlocks Error:  " << ex.what()
                     << std::endl;
     }
 }
@@ -596,11 +606,16 @@ DetectedBlock Open3DPointCloud::ExtractBlock(std::vector<size_t> &horiz_indexes,
   std::vector<size_t> block_top_plane_indexes;
   std::shared_ptr<geometry::PointCloud> horizface_cloud_ptr = leftovers_segment->SelectByIndex(horiz_indexes);
 
-
-
   if (debug_level == DebugLevel::Visual){
     visualization::DrawGeometries({horizface_cloud_ptr}, "ALL HORIZONTAL (with normals)...", 640, 480, 50, 50, true); 
   }
+
+  Eigen::Vector3d min_bounds, max_bounds;
+  Eigen::Vector3d diff_bounds = GetObjectBounds(*horizface_cloud_ptr, min_bounds, max_bounds);
+  auto bb = horizface_cloud_ptr->GetOrientedBoundingBox();
+  std::cout << "Horiz BB:" << bb.extent_ << std::endl;
+
+
   Eigen::Vector3d block_top_center = horizface_cloud_ptr->GetCenter();
   
   if (block_top_center[2] < (surface_height - (block_size * 1.5))){

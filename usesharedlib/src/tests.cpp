@@ -37,7 +37,9 @@ TEST(BlockDetectionTest, Cloud1) {
     std::vector<double> horizontal_surface_height;
     int floor_surface_height = 0.20;  //Anything below this is floor
     //auto plyfilename ="../plys/counter_height_38.ply";
-
+    //auto plyfilename ="../plys/debugdetectblock1.ply";
+    auto plyfilename ="../plys/debugdetectblock2.ply";
+    
 
     Eigen::Vector3d vv = Eigen::Vector3d(0.4,0.3,0.8);
     vv.normalize();
@@ -45,11 +47,16 @@ TEST(BlockDetectionTest, Cloud1) {
 
     std::cout << angleToVerticalPlane(vv) << std::endl;
 
-    auto plyfilename ="/home/valerie/blockdetection_ros2/plys/debugdetectblock2.ply";
+    //auto plyfilename ="/home/valerie/blockdetection_ros2/plys/debugdetectblock2.ply";
     auto pcd_down = open3d::io::CreatePointCloudFromFile(plyfilename);
     auto coord_axis = geometry::TriangleMesh::CreateCoordinateFrame(0.30, Eigen::Vector3d(0,0, -0.630));
 
     pcd_down = pcd_down->UniformDownSample(2);
+
+    visualization::DrawGeometries({pcd_down}, 
+                                      "Incoming Point Cloud ");
+
+
     std::vector<std::shared_ptr<const geometry::Geometry>> geometry_ptrs;
     geometry_ptrs.push_back(pcd_down);
 
