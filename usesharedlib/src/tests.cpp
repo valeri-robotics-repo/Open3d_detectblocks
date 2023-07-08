@@ -18,14 +18,36 @@
     ASSERT_GE((VAL), (MIN));           \
     ASSERT_LE((VAL), (MAX))
 
+double angleToHorizPlane(Eigen::Vector3d vv){
+    Eigen::Vector3d xy = Eigen::Vector3d(0,0,1);
+    auto dp = xy.dot(vv);
+    return asin(dp);
+}
+
+double angleToVerticalPlane(Eigen::Vector3d vv){
+    
+    Eigen::Vector3d xz = Eigen::Vector3d(1,0,0);
+    auto dp = xz.dot(vv);
+    return acos(dp);
+}
+
+
 
 TEST(BlockDetectionTest, Cloud1) { 
     std::vector<double> horizontal_surface_height;
     int floor_surface_height = 0.20;  //Anything below this is floor
-    auto plyfilename ="../plys/counter_height_38.ply";
-    //auto plyfilename ="/home/valerie/edward2_ws/debugdetectblock2.ply";
+    //auto plyfilename ="../plys/counter_height_38.ply";
+
+
+    Eigen::Vector3d vv = Eigen::Vector3d(0.4,0.3,0.8);
+    vv.normalize();
+    std::cout <<vv << std::endl;
+
+    std::cout << angleToVerticalPlane(vv) << std::endl;
+
+    auto plyfilename ="/home/valerie/blockdetection_ros2/plys/debugdetectblock2.ply";
     auto pcd_down = open3d::io::CreatePointCloudFromFile(plyfilename);
-    auto coord_axis = geometry::TriangleMesh::CreateCoordinateFrame(0.30, Eigen::Vector3d(0,0,0));
+    auto coord_axis = geometry::TriangleMesh::CreateCoordinateFrame(0.30, Eigen::Vector3d(0,0, -0.630));
 
     pcd_down = pcd_down->UniformDownSample(2);
     std::vector<std::shared_ptr<const geometry::Geometry>> geometry_ptrs;
@@ -34,7 +56,7 @@ TEST(BlockDetectionTest, Cloud1) {
     std::vector<double> horizontal_surface_heights;
     std::vector<DetectedBlock> block_list;
 
-    Open3DPointCloud o3dpc(0.03f, false, DebugLevel::None );
+    Open3DPointCloud o3dpc(0.03f, false, DebugLevel::Visual );
 
     auto start_time = std::chrono::high_resolution_clock::now();
 
@@ -61,17 +83,20 @@ TEST(BlockDetectionTest, Cloud1) {
         box_top_center_marker->Translate(block.block_top_center);
         geometry_ptrs.push_back(box_top_center_marker);
 
-        Eigen::Vector3d end_point = block.block_top_center + block.block_normal*0.1;
+        Eigen::Vector3d end_point = block.block_top_center + block.block_normal * 1.0;
         //pretend like it is perfectly horizontal:
         end_point[2] = block.block_top_center[2];
         auto normal_line = o3dpc.CreateLine(block.block_top_center, end_point);  //1 cm
-        normal_line.PaintUniformColor(Eigen::Vector3d(0.10, 0.92, 0.8));
+        normal_line.PaintUniformColor(Eigen::Vector3d(0.0, 1.0, 0.0));
         auto normal_line_ptr = std::make_shared<geometry::LineSet>(normal_line);           
         geometry_ptrs.push_back(normal_line_ptr);
         geometry_ptrs.push_back(coord_axis);
 
         std::cout << "center: " << block.block_top_center << std::endl;
         std::cout << "normal: " << block.block_normal << std::endl;
+        
+        std::cout << angleToHorizPlane(block.block_normal) * 57.29 << std::endl;
+
         std::cout << "z rotation: " << o3dpc.to_degrees(block.angle_around_z) << std::endl;
         
         std::cout << "---------------------------------" << std::endl;

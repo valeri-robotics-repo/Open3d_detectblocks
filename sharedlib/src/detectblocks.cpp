@@ -77,6 +77,22 @@ bool Open3DPointCloud::SavePointCloud(std::string filename_ply, geometry::PointC
     return success;
 }
 
+
+double angleToHorizPlane(Eigen::Vector3d vv){
+    
+    Eigen::Vector3d xy = Eigen::Vector3d(0,0,1);
+    auto dp = xy.dot(vv);
+    return asin(dp);
+}
+
+double angleToVerticalPlane(Eigen::Vector3d vv){
+    
+    Eigen::Vector3d xz = Eigen::Vector3d(1,0,0);
+    auto dp = xz.dot(vv);
+    return asin(dp);
+}
+
+
 //For the point cloud we are getting, the floor is z (2), < 0.2 ...
 std::tuple<std::vector<size_t>, std::vector<size_t>, std::vector<size_t>>
     Open3DPointCloud::SeperateHorizandVertNorms(const std::vector<Eigen::Vector3d> &points,
@@ -88,7 +104,7 @@ std::tuple<std::vector<size_t>, std::vector<size_t>, std::vector<size_t>>
 
     size_t closest_idx = -1;
 
-    double norm_min = 0.7;
+    double norm_min = 0.5;
     double norm_max = 0.9;
 
     for (size_t idx = 0; idx < norms.size(); idx++) {
@@ -105,8 +121,10 @@ std::tuple<std::vector<size_t>, std::vector<size_t>, std::vector<size_t>>
             if (point.norm() != 0.0) {
               if (abs(norm(2)) > norm_max) {
                 horiz_indexes.push_back(idx);
-              } else if ( abs(norm(2)) < norm_min) {
-                vert_indexes.push_back(idx);
+              } else {
+                auto ang = angleToHorizPlane(norm);
+                if (abs(ang) < 0.6)
+                  vert_indexes.push_back(idx); 
               }
             }
         }
@@ -213,7 +231,8 @@ std::vector<size_t> Open3DPointCloud::ExtractLargestPlane(const geometry::PointC
     Eigen::Vector4d surface_plane;
     std::vector<size_t> surface_plane_indexes;
 
-    std::tie(plane_equation, surface_plane_indexes) = plane_cloud_ptr.SegmentPlane(0.015, 4, 150);
+
+    std::tie(plane_equation, surface_plane_indexes) = plane_cloud_ptr.SegmentPlane(0.015, 4, 20);
     if (debug_level >= DebugLevel::Verbal) {
       PrintPlaneEquation(plane_equation);
     }
