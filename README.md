@@ -1,4 +1,4 @@
-# Open3d_example
+# Open3d_BlockDetection
 
 
 ## Examples
@@ -31,11 +31,8 @@ How to run this project:
 
 Orientation: The point cloud must be oriented with the Blue (Z) axis up and Red (X) axis forward, Right handed orientation.  The major surface must lie on the  X-Y plane.
 
-
 ![Image](./images/zup.png)
 
-
-        ![Alt text](images/zup.png?raw=true "Orientation")
     2.  The floor is the difference from the current orientation to the floor (Z) value.  If the floor is below your axis of orientation, this value will be negative.
 
 Video:
